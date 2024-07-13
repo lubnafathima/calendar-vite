@@ -1,0 +1,105 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.header {
+  width: 100%;
+  min-height: 7vh;
+  border-bottom: 1px solid #efefef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.calendar {
+  width: 100%;
+  min-height: 93vh;
+  /*  */
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f8f8;
+}
+
+.button {
+  background-color: #fff;
+  border: 1px solid #000;
+  color: #000;
+  cursor: pointer;
+  padding: 0.5rem 2rem;
+  border-radius: 0.3rem;
+}
+
+.button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.header_date {
+  font-size: 1.5rem;
+}
+
+.header_button_group {
+  display: flex;
+  gap: 2rem;
+}
+
+.calendar_header {
+  width: 100%;
+  display: flex;
+}
+
+.day_of_week {
+  width: 100%;
+  min-height: 7vh;
+  border: 1px solid #efefef;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  background-color: #fff;
+}
+
+.calendar_main {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.calendar_main {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #f8f8f8;
+}
+
+.calendar_day {
+  width: calc(100% / 7);
+  min-height: 14.3vh;
+  text-align: end;
+  padding: 10px;
+  border: 1px solid #efefef;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+.empty {
+  background-color: #f8f8f8;
+  border: none;
+}
+
+.today {
+  background-color: antiquewhite;
+  border: 1px solid antiquewhite;
+}
