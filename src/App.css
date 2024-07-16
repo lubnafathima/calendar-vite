@@ -139,3 +139,40 @@
 .calendar_day {
   cursor: pointer;
 }
+
+
+
+
+.calendar_container {
+  display: flex;
+  position: relative;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 30%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.popup_content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.close-popup {
+  align-self: flex-end;
+  margin-bottom: 10px;
+}
+
+.calendar_day {
+  cursor: pointer;
+}

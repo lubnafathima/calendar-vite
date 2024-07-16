@@ -1,4 +1,5 @@
-import PropTypes from 'prop-types';
+import { useState } from "react";
+import PropTypes from "prop-types";
 import {
   DAY_OF_THE_WEEK,
   CURRENT_DATE,
@@ -7,6 +8,8 @@ import {
 } from "../utils/constants";
 
 export default function Calendar({ month, year }) {
+  const [selectedDate, setSelectedDate] = useState(null);
+
   const getLastDate = (monthValue, yearValue) =>
     new Date(yearValue, monthValue + 1, 0).getDate();
 
@@ -14,14 +17,25 @@ export default function Calendar({ month, year }) {
   const lastDateOfMonth = getLastDate(month, year);
   const firstDayOfAMonth = new Date(year, month, firstDateOfAMonth).getDay();
 
+  const handleClick = (date) => setSelectedDate(date);
+
+  const closePopup = () => setSelectedDate(null);
+
   const days = Array.from({ length: firstDayOfAMonth }, (_, i) => (
     <div key={`empty-${i}`} className="calendar_day empty"></div>
   )).concat(
     Array.from({ length: lastDateOfMonth }, (_, day) => {
       const date = day + 1;
-      const isToday = date === CURRENT_DATE && month === CURRENT_MONTH && year === CURRENT_YEAR;
+      const isToday =
+        date === CURRENT_DATE &&
+        month === CURRENT_MONTH &&
+        year === CURRENT_YEAR;
       return (
-        <div key={date} className={`calendar_day ${isToday ? "today" : ""}`}>
+        <div
+          key={date}
+          className={`calendar_day ${isToday ? "today" : ""}`}
+          onClick={() => handleClick(date)}
+        >
           {date}
         </div>
       );
@@ -29,15 +43,29 @@ export default function Calendar({ month, year }) {
   );
 
   return (
-    <div className="calendar">
-      <div className="calendar_header">
-        {DAY_OF_THE_WEEK.map((day, index) => (
-          <p key={index} className="day_of_week">
-            {day}
-          </p>
-        ))}
+    <div className="calendar_container">
+      <div className="calendar">
+        <div className="calendar_header">
+          {DAY_OF_THE_WEEK.map((day, index) => (
+            <p key={index} className="day_of_week">
+              {day}
+            </p>
+          ))}
+        </div>
+        <div className="calendar_main">{days}</div>
       </div>
-      <div className="calendar_main">{days}</div>
+      {selectedDate !== null && (
+        <div className="popup">
+          <div className="popup_content">
+            <button onClick={closePopup} className="close-popup">
+              Close
+            </button>
+            <h3>{`Selected Date: ${selectedDate}/${month + 1}/${year}`}</h3>
+            <input type="text" placeholder="Your input" />
+            <button>Submit</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
