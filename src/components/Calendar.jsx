@@ -6,9 +6,13 @@ import {
   CURRENT_MONTH,
   CURRENT_YEAR,
 } from "../utils/constants";
+import { IoMdClose } from "react-icons/io";
+import { FaRegCalendarAlt } from "react-icons/fa";
 
 export default function Calendar({ month, year }) {
   const [selectedDate, setSelectedDate] = useState(null);
+  const [tasks, setTasks] = useState({});
+  const [taskInput, setTaskInput] = useState("");
 
   const getLastDate = (monthValue, yearValue) =>
     new Date(yearValue, monthValue + 1, 0).getDate();
@@ -19,7 +23,24 @@ export default function Calendar({ month, year }) {
 
   const handleClick = (date) => setSelectedDate(date);
 
-  const closePopup = () => setSelectedDate(null);
+  const closeTask = () => {
+    setSelectedDate(null);
+    setTaskInput(""); // Clear the input when closing the task
+  };
+
+  const handleTaskSubmit = () => {
+    if (taskInput) {
+      const dateKey = `${selectedDate}-${month + 1}-${year}`;
+      const newTask = {
+        ...tasks,
+        [dateKey]: [...(tasks[dateKey] || []), taskInput],
+      };
+      setTasks(newTask);
+      setTaskInput(""); // Clear the input after submission
+    }
+  };
+
+  const getDayTasks = (date) => tasks[`${date}-${month + 1}-${year}`] || [];
 
   const days = Array.from({ length: firstDayOfAMonth }, (_, i) => (
     <div key={`empty-${i}`} className="calendar_day empty"></div>
@@ -30,13 +51,20 @@ export default function Calendar({ month, year }) {
         date === CURRENT_DATE &&
         month === CURRENT_MONTH &&
         year === CURRENT_YEAR;
+      const taskList = getDayTasks(date);
       return (
         <div
           key={date}
           className={`calendar_day ${isToday ? "today" : ""}`}
           onClick={() => handleClick(date)}
         >
-          {date}
+          <p className="calendar_date"><span>{date}</span></p>
+          {taskList.length > 0 && (
+            <div className="task_display">
+              {taskList[0]}
+              {taskList.length > 1 && <p className="view_more">View more</p>}
+            </div>
+          )}
         </div>
       );
     })
@@ -55,14 +83,35 @@ export default function Calendar({ month, year }) {
         <div className="calendar_main">{days}</div>
       </div>
       {selectedDate !== null && (
-        <div className="popup">
-          <div className="popup_content">
-            <button onClick={closePopup} className="close-popup">
-              Close
+        <div className="task">
+          <div className="task_content">
+            <button onClick={closeTask} className="close_task">
+              <IoMdClose />
             </button>
-            <h3>{`Selected Date: ${selectedDate}/${month + 1}/${year}`}</h3>
-            <input type="text" placeholder="Your input" />
-            <button>Submit</button>
+            <h3 className="task_date">
+              <FaRegCalendarAlt /> {`${selectedDate}/${month + 1}/${year}`}
+            </h3>
+            {getDayTasks(selectedDate).length > 0 ? (
+              getDayTasks(selectedDate).map((task, index) => (
+                <p key={index} className="task_full_text">
+                  {task}
+                </p>
+              ))
+            ) : (
+              <p className="no_task_text">No task added</p>
+            )}
+          </div>
+          <div className="task_form">
+            <input
+              type="text"
+              placeholder="Add task"
+              className="task_input"
+              value={taskInput}
+              onChange={(e) => setTaskInput(e.target.value)}
+            />
+            <button className="task_submit button" onClick={handleTaskSubmit}>
+              Submit
+            </button>
           </div>
         </div>
       )}

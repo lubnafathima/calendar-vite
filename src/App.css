@@ -25,7 +25,6 @@
 .calendar {
   width: 100%;
   min-height: 93vh;
-  /*  */
   display: flex;
   flex-direction: column;
   background-color: #f8f8f8;
@@ -76,22 +75,18 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-}
-
-.calendar_main {
-  display: flex;
-  flex-wrap: wrap;
   background-color: #f8f8f8;
 }
 
 .calendar_day {
   width: calc(100% / 7);
   min-height: 14.3vh;
-  text-align: end;
+  text-align: center;
   padding: 10px;
   border: 1px solid #efefef;
   background-color: #fff;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .empty {
@@ -99,56 +94,29 @@
   border: none;
 }
 
-.today {
-  background-color: antiquewhite;
-  border: 1px solid antiquewhite;
+.calendar_date {
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
-
-
-.calendar-container {
-  display: flex;
-  position: relative;
+.calendar_date span {
+  padding: .25rem;
 }
 
-.popup {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100%;
-  width: 30%;
-  background-color: white;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
+.today .calendar_date span {
+  background-color: #428bca;
+  border: 1px solid #428bca;
+  color:#fff;
+  border-radius: 50%;
 }
-
-.popup_content {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.close-popup {
-  align-self: flex-end;
-  margin-bottom: 10px;
-}
-
-.calendar_day {
-  cursor: pointer;
-}
-
-
-
 
 .calendar_container {
   display: flex;
   position: relative;
 }
 
-.popup {
+.task {
   position: fixed;
   top: 0;
   right: 0;
@@ -162,17 +130,79 @@
   padding: 20px;
 }
 
-.popup_content {
+.task_content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
-.close-popup {
+.close_task {
   align-self: flex-end;
   margin-bottom: 10px;
+  background-color: #fff;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
-.calendar_day {
+.task_date {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.task_full_text {
+  padding: 1rem;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.no_task_text {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #ccc;
+  color: #999;
+  text-align: center;
+}
+
+.task_input {
+  border: 1px solid #000;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.task_submit {
+  align-self: flex-end;
+  background-color: #66cd7e;
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
   cursor: pointer;
+}
+
+.task_display {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 5px;
+  width: 100%;
+  align-self: start;
+  color: #999;
+}
+
+.view_more {
+  margin-top: .5rem;
+  font-size: .8rem;
+  align-self: end;
+  background-color: #f3f3f3;
+  color: #999;
+  padding: .25rem;
 }
