@@ -25,7 +25,7 @@ export default function Calendar({ month, year }) {
 
   const closeTask = () => {
     setSelectedDate(null);
-    setTaskInput(""); // Clear the input when closing the task
+    setTaskInput("");
   };
 
   const handleTaskSubmit = () => {
@@ -36,7 +36,7 @@ export default function Calendar({ month, year }) {
         [dateKey]: [...(tasks[dateKey] || []), taskInput],
       };
       setTasks(newTask);
-      setTaskInput(""); // Clear the input after submission
+      setTaskInput("");
     }
   };
 
@@ -58,7 +58,9 @@ export default function Calendar({ month, year }) {
           className={`calendar_day ${isToday ? "today" : ""}`}
           onClick={() => handleClick(date)}
         >
-          <p className="calendar_date"><span>{date}</span></p>
+          <p className="calendar_date">
+            <span>{date}</span>
+          </p>
           {taskList.length > 0 && (
             <div className="task_display">
               {taskList[0]}
