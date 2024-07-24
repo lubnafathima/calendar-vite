@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, onSnapshot, addDoc } from "firebase/firestore";
 import {
   DAY_OF_THE_WEEK,
   CURRENT_DATE,
@@ -9,10 +11,60 @@ import {
 import { IoMdClose } from "react-icons/io";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyCsdwccFjPGvLZZ4R00avSC6cyi02SMPeU",
+  authDomain: "react-firebase-5af93.firebaseapp.com",
+  databaseURL: "https://react-firebase-5af93-default-rtdb.firebaseio.com",
+  projectId: "react-firebase-5af93",
+  storageBucket: "react-firebase-5af93.appspot.com",
+  messagingSenderId: "60488273323",
+  appId: "1:60488273323:web:136387e007857ebd9296ee",
+  measurementId: "G-19E1NV1Q9J",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 export default function Calendar({ month, year }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [tasks, setTasks] = useState({});
   const [taskInput, setTaskInput] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "test"), (snapshot) => {
+      const taskData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const groupedTasks = taskData.reduce((acc, task) => {
+        const dateKey = task.date;
+        if (!acc[dateKey]) acc[dateKey] = [];
+        acc[dateKey].push(task.task);
+        return acc;
+      }, {});
+      setTasks(groupedTasks);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleTaskSubmit = async () => {
+    if (taskInput && selectedDate) {
+      const taskDate = `${selectedDate}-${month + 1}-${year}`;
+      try {
+        await addDoc(collection(db, "test"), {
+          task: taskInput,
+          date: taskDate,
+        });
+        setTaskInput("");
+        setSelectedDate(null);
+      } catch (error) {
+        console.error("Error adding document: ", error);
+      }
+    }
+  };
+
+  const getDayTasks = (date) => tasks[`${date}-${month + 1}-${year}`] || [];
 
   const getLastDate = (monthValue, yearValue) =>
     new Date(yearValue, monthValue + 1, 0).getDate();
@@ -27,20 +79,6 @@ export default function Calendar({ month, year }) {
     setSelectedDate(null);
     setTaskInput("");
   };
-
-  const handleTaskSubmit = () => {
-    if (taskInput) {
-      const dateKey = `${selectedDate}-${month + 1}-${year}`;
-      const newTask = {
-        ...tasks,
-        [dateKey]: [...(tasks[dateKey] || []), taskInput],
-      };
-      setTasks(newTask);
-      setTaskInput("");
-    }
-  };
-
-  const getDayTasks = (date) => tasks[`${date}-${month + 1}-${year}`] || [];
 
   const days = Array.from({ length: firstDayOfAMonth }, (_, i) => (
     <div key={`empty-${i}`} className="calendar_day empty"></div>
