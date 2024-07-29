@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { initializeApp } from "firebase/app";
-import { getFirestore, collection, onSnapshot, addDoc } from "firebase/firestore";
+import { collection, onSnapshot, addDoc } from "firebase/firestore";
+import { db } from "../utils/firebase";
 import {
   DAY_OF_THE_WEEK,
   CURRENT_DATE,
@@ -10,20 +10,6 @@ import {
 } from "../utils/constants";
 import { IoMdClose } from "react-icons/io";
 import { FaRegCalendarAlt } from "react-icons/fa";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCsdwccFjPGvLZZ4R00avSC6cyi02SMPeU",
-  authDomain: "react-firebase-5af93.firebaseapp.com",
-  databaseURL: "https://react-firebase-5af93-default-rtdb.firebaseio.com",
-  projectId: "react-firebase-5af93",
-  storageBucket: "react-firebase-5af93.appspot.com",
-  messagingSenderId: "60488273323",
-  appId: "1:60488273323:web:136387e007857ebd9296ee",
-  measurementId: "G-19E1NV1Q9J",
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 export default function Calendar({ month, year }) {
   const [selectedDate, setSelectedDate] = useState(null);
